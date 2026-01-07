@@ -13,8 +13,8 @@ body {
 
 /* Light Mode: Gold + Black */
 .light {
-  background-color: var(--black);
-  color: var(--gold);
+  background-color: #ffffff;
+  color: var(--black);
   min-height: 100vh;
 }
 
@@ -24,6 +24,7 @@ body {
   color: var(--silver);
   min-height: 100vh;
 }
+
 
 /* Dashboard */
 .dashboard {
