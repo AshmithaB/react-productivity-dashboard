@@ -1,0 +1,88 @@
+:root {
+  --gold: #d4af37;
+  --silver: #c0c0c0;
+  --black: #0b0b0b;
+  --dark-bg: #121212;
+}
+
+/* Base */
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Light Mode: Gold + Black */
+.light {
+  background-color: var(--black);
+  color: var(--gold);
+  min-height: 100vh;
+}
+
+/* Dark Mode: Gold + Silver */
+.dark {
+  background-color: var(--dark-bg);
+  color: var(--silver);
+  min-height: 100vh;
+}
+
+/* Dashboard */
+.dashboard {
+  max-width: 600px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+/* Title */
+.title {
+  color: var(--gold);
+  margin-bottom: 20px;
+  font-size: 32px;
+}
+
+/* Input Section */
+.task-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.task-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: inherit;
+}
+
+.task-input input::placeholder {
+  color: gray;
+}
+
+/* Button */
+button {
+  background-color: var(--gold);
+  color: black;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* Task List */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-card {
+  padding: 12px;
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  background: rgba(212, 175, 55, 0.05);
+}
+

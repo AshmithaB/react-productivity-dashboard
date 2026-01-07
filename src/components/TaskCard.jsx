@@ -1,3 +1,3 @@
 export default function TaskCard({ task }) {
-  return <div>{task}</div>;
+  return <div className="task-card">{task}</div>;
 }
