@@ -7,9 +7,12 @@ export default function Dashboard() {
   const [task, setTask] = useState("");
 
   function addTask() {
-    dispatch({ type: "ADD_TASK", payload: task });
-    setTask("");
-  }
+  if (task.trim() === "") return;   // ✅ prevents empty task
+
+  dispatch({ type: "ADD_TASK", payload: task });
+  setTask("");
+}
+
 
  return (
   <div className="dashboard">
@@ -27,7 +30,10 @@ export default function Dashboard() {
         onChange={(e) => setTask(e.target.value)}
         placeholder="Enter a task..."
       />
-      <button onClick={addTask}>Add Task</button>
+      <button onClick={addTask} disabled={!task.trim()}>
+  Add Task
+</button>
+
     </div>
 
     <div className="task-list">
