@@ -1,6 +1,8 @@
 import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import TaskCard from "../components/TaskCard";
+import Stats from "../components/Stats";
+
 
 export default function Dashboard() {
   const { dispatch } = useContext(AppContext);
@@ -36,7 +38,7 @@ export default function Dashboard() {
           Add Task
         </button>
       </div>
-
+      <Stats/>
       {/* ✅ Render TaskCard ONCE */}
       <TaskCard />
     </div>
