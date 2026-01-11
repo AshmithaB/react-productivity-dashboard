@@ -54,12 +54,10 @@ function reducer(state, action) {
 export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Persist tasks
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(state.tasks));
   }, [state.tasks]);
 
-  // Persist theme
   useEffect(() => {
     localStorage.setItem("theme", state.theme);
   }, [state.theme]);
