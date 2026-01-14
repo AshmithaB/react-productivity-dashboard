@@ -60,11 +60,12 @@ export function AppProvider({ children }) {
 
   useEffect(() => {
     localStorage.setItem("theme", state.theme);
+    document.body.className = state.theme;
   }, [state.theme]);
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>
-      <div className={state.theme}>{children}</div>
+      {children}
     </AppContext.Provider>
   );
 }
