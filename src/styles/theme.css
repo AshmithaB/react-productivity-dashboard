@@ -130,3 +130,22 @@ button:hover {
   font-size: 24px;
   margin: 6px 0 0;
 }
+.timer-card {
+  border: 1px solid var(--gold);
+  padding: 20px;
+  margin: 30px 0;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.timer-display {
+  font-size: 40px;
+  margin: 15px 0;
+  color: var(--gold);
+}
+
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}

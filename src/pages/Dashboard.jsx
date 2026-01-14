@@ -2,18 +2,16 @@ import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import TaskCard from "../components/TaskCard";
 import Stats from "../components/Stats";
+import Timer from "../components/Timer";
 
 
 export default function Dashboard() {
-  const { dispatch } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
   const [task, setTask] = useState("");
 
   function addTask() {
     if (task.trim() === "") return;
-
     dispatch({ type: "ADD_TASK", payload: task });
-
-
     setTask("");
   }
 
@@ -27,6 +25,7 @@ export default function Dashboard() {
       >
         Toggle Theme
       </button>
+        <Timer />
 
       <div className="task-input">
         <input
@@ -38,9 +37,16 @@ export default function Dashboard() {
           Add Task
         </button>
       </div>
-      <Stats/>
-      {/* ✅ Render TaskCard ONCE */}
-      <TaskCard />
+    
+
+      <Stats />
+
+      <div className="task-list">
+        {state.tasks.length === 0 && <p>No tasks added yet</p>}
+        {state.tasks.map((task) => (
+          <TaskCard key={task.id} task={task} />
+        ))}
+      </div>
     </div>
   );
 }
