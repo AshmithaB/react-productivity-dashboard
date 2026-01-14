@@ -40,13 +40,24 @@ export default function Dashboard() {
     
 
       <Stats />
+      <div className="filters">
+  {["all", "active", "completed"].map((type) => (
+    <button
+      key={type}
+      className={`filter-btn ${
+        state.filter === type ? "active-filter" : ""
+      }`}
+      onClick={() =>
+        dispatch({ type: "SET_FILTER", payload: type })
+      }
+    >
+      {type.toUpperCase()}
+    </button>
+  ))}
+</div>
 
-      <div className="task-list">
-        {state.tasks.length === 0 && <p>No tasks added yet</p>}
-        {state.tasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
-        ))}
+
+      <TaskCard/>
       </div>
-    </div>
   );
 }
