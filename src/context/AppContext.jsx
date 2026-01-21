@@ -5,6 +5,8 @@ export const AppContext = createContext();
 const initialState = {
   tasks: JSON.parse(localStorage.getItem("tasks")) || [],
   theme: localStorage.getItem("theme") || "dark",
+  filter: "all",
+  activeTaskId: null, // ⭐ NEW
 };
 
 function reducer(state, action) {
@@ -21,6 +23,12 @@ function reducer(state, action) {
           },
         ],
       };
+    case "SET_FILTER":
+        return {
+          ...state,
+           filter: action.payload,
+        };
+
 
     case "TOGGLE_TASK":
       return {
@@ -45,6 +53,23 @@ function reducer(state, action) {
         ...state,
         theme: state.theme === "dark" ? "light" : "dark",
       };
+      case "START_TASK":
+  return {
+    ...state,
+    activeTaskId: action.payload,
+  };
+
+case "FINISH_TASK":
+  return {
+    ...state,
+    tasks: state.tasks.map(task =>
+      task.id === state.activeTaskId
+        ? { ...task, completed: true }
+        : task
+    ),
+    activeTaskId: null,
+  };
+
 
     default:
       return state;

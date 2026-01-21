@@ -14,6 +14,11 @@ export default function Dashboard() {
     dispatch({ type: "ADD_TASK", payload: task });
     setTask("");
   }
+   const filteredTasks = state.tasks.filter((task) => {
+  if (state.filter === "active") return !task.completed;
+  if (state.filter === "completed") return task.completed;
+  return true; // all
+});
 
   return (
     <div className="dashboard">
@@ -56,8 +61,14 @@ export default function Dashboard() {
   ))}
 </div>
 
+<div className="task-list">
+  {state.tasks.length === 0 && <p>No tasks added yet</p>}
 
-      <TaskCard/>
+  {state.tasks.map((task) => (
+    <TaskCard key={task.id} task={task} />
+  ))}
+</div>
+
       </div>
   );
 }

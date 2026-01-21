@@ -1,47 +1,50 @@
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 
-export default function TaskCard() {
+export default function TaskCard({ task }) {
   const { state, dispatch } = useContext(AppContext);
 
-  // Apply filter logic
-  const filteredTasks = state.tasks.filter((task) => {
-    if (state.filter === "active") return !task.completed;
-    if (state.filter === "completed") return task.completed;
-    return true;
-  });
-
-  if (filteredTasks.length === 0) {
-    return <p>No tasks to display</p>;
-  }
+  const isActive = state.activeTaskId === task.id;
 
   return (
-    <div className="task-list">
-      {filteredTasks.map((task) => (
-        <div
-          key={task.id}
-          className={`task-card ${task.completed ? "completed" : ""}`}
+    <div
+      className={`task-card ${task.completed ? "completed" : ""}`}
+    >
+      <input
+        type="checkbox"
+        checked={task.completed}
+        onChange={() =>
+          dispatch({ type: "TOGGLE_TASK", payload: task.id })
+        }
+      />
+
+      <span>{task.text}</span>
+
+      {!task.completed && (
+        <button
+          onClick={() =>
+            dispatch({
+              type: "START_TASK",
+              payload: task.id,
+            })
+          }
+          disabled={state.activeTaskId && !isActive}
         >
-          <input
-            type="checkbox"
-            checked={task.completed}
-            onChange={() =>
-              dispatch({ type: "TOGGLE_TASK", payload: task.id })
-            }
-          />
+          {isActive ? "In Focus" : "Start"}
+        </button>
+      )}
 
-          <span>{task.text}</span>
-
-          <button
-            className="delete-btn"
-            onClick={() =>
-              dispatch({ type: "DELETE_TASK", payload: task.id })
-            }
-          >
-            ✕
-          </button>
-        </div>
-      ))}
+      <button
+        className="delete-btn"
+        onClick={() =>
+          dispatch({
+            type: "DELETE_TASK",
+            payload: task.id,
+          })
+        }
+      >
+        ✕
+      </button>
     </div>
   );
 }
