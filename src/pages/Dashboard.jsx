@@ -4,7 +4,6 @@ import TaskCard from "../components/TaskCard";
 import Stats from "../components/Stats";
 import Timer from "../components/Timer";
 
-
 export default function Dashboard() {
   const { state, dispatch } = useContext(AppContext);
   const [task, setTask] = useState("");
@@ -14,11 +13,13 @@ export default function Dashboard() {
     dispatch({ type: "ADD_TASK", payload: task });
     setTask("");
   }
-   const filteredTasks = state.tasks.filter((task) => {
-  if (state.filter === "active") return !task.completed;
-  if (state.filter === "completed") return task.completed;
-  return true; // all
-});
+
+  // ✅ APPLY FILTER HERE
+  const filteredTasks = state.tasks.filter((task) => {
+    if (state.filter === "active") return !task.completed;
+    if (state.filter === "completed") return task.completed;
+    return true; // all
+  });
 
   return (
     <div className="dashboard">
@@ -30,7 +31,8 @@ export default function Dashboard() {
       >
         Toggle Theme
       </button>
-        <Timer />
+
+      <Timer />
 
       <div className="task-input">
         <input
@@ -42,33 +44,34 @@ export default function Dashboard() {
           Add Task
         </button>
       </div>
-    
 
       <Stats />
+
+      {/* FILTER BUTTONS */}
       <div className="filters">
-  {["all", "active", "completed"].map((type) => (
-    <button
-      key={type}
-      className={`filter-btn ${
-        state.filter === type ? "active-filter" : ""
-      }`}
-      onClick={() =>
-        dispatch({ type: "SET_FILTER", payload: type })
-      }
-    >
-      {type.toUpperCase()}
-    </button>
-  ))}
-</div>
-
-<div className="task-list">
-  {state.tasks.length === 0 && <p>No tasks added yet</p>}
-
-  {state.tasks.map((task) => (
-    <TaskCard key={task.id} task={task} />
-  ))}
-</div>
-
+        {["all", "active", "completed"].map((type) => (
+          <button
+            key={type}
+            className={`filter-btn ${
+              state.filter === type ? "active-filter" : ""
+            }`}
+            onClick={() =>
+              dispatch({ type: "SET_FILTER", payload: type })
+            }
+          >
+            {type.toUpperCase()}
+          </button>
+        ))}
       </div>
+
+      {/* ✅ USE filteredTasks HERE */}
+      <div className="task-list">
+        {filteredTasks.length === 0 && <p>No tasks found</p>}
+
+        {filteredTasks.map((task) => (
+          <TaskCard key={task.id} task={task} />
+        ))}
+      </div>
+    </div>
   );
 }

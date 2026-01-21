@@ -1,59 +1,91 @@
-import { useContext, useEffect } from "react";
+import { useEffect, useState, useContext } from "react";
 import { AppContext } from "../context/AppContext";
-import usePomodoro from "../hooks/usePomodoro";
+
+const FOCUS_TIME = 25 * 60;
+const BREAK_TIME = 5 * 60;
 
 export default function Timer() {
   const { state, dispatch } = useContext(AppContext);
 
-  const {
-    seconds,
-    isRunning,
-    isBreak,
-    start,
-    pause,
-    reset,
-  } = usePomodoro();
+  const [seconds, setSeconds] = useState(FOCUS_TIME);
+  const [isRunning, setIsRunning] = useState(false);
+  const [mode, setMode] = useState("focus"); // focus | break
 
-  const minutes = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-
-  // ✅ When focus session ends → auto-complete task
+  // ⏱ Timer tick
   useEffect(() => {
-    if (seconds === 0 && !isBreak && state.activeTaskId) {
+    if (!isRunning) return;
+
+    const interval = setInterval(() => {
+      setSeconds((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isRunning]);
+
+  // ⏰ When time finishes
+  useEffect(() => {
+    if (seconds > 0) return;
+
+    if (mode === "focus") {
       dispatch({ type: "FINISH_TASK" });
+      setMode("break");
+      setSeconds(BREAK_TIME);
+    } else {
+      setMode("focus");
+      setSeconds(FOCUS_TIME);
     }
-  }, [seconds, isBreak, state.activeTaskId, dispatch]);
+  }, [seconds, mode, dispatch]);
+
+  // 🔄 Reset timer when active task changes
+  useEffect(() => {
+    setIsRunning(false);
+    setMode("focus");
+    setSeconds(FOCUS_TIME);
+  }, [state.activeTaskId]);
+  // auto-start timer when a task is started
+useEffect(() => {
+  if (state.activeTaskId) {
+    setIsRunning(true);
+  }
+}, [state.activeTaskId]);
+
+
+  function formatTime(sec) {
+    const m = String(Math.floor(sec / 60)).padStart(2, "0");
+    const s = String(sec % 60).padStart(2, "0");
+    return `${m}:${s}`;
+  }
 
   return (
-    <div className="timer-card">
-      <h2>
-        {isBreak ? "Break Time" : "Focus Time"}
-      </h2>
+    <div className="timer">
+      <h2>{mode === "focus" ? "Focus Time" : "Break Time"}</h2>
 
-      <p className="active-task">
-        {state.activeTaskId
-          ? "Focusing on a task"
-          : "No task selected"}
-      </p>
-
-      <div className="timer-display">
-        {minutes}:{secs.toString().padStart(2, "0")}
-      </div>
+      <div className="time">{formatTime(seconds)}</div>
 
       <div className="timer-controls">
-        {!isRunning ? (
-          <button
-            onClick={start}
-            disabled={!state.activeTaskId}
-          >
-            Start
-          </button>
-        ) : (
-          <button onClick={pause}>Pause</button>
-        )}
+        <button
+          onClick={() => setIsRunning(true)}
+          disabled={!state.activeTaskId}
+        >
+          Start
+        </button>
 
-        <button onClick={reset}>Reset</button>
+        <button onClick={() => setIsRunning(false)}>Pause</button>
+
+        <button
+          onClick={() => {
+            setIsRunning(false);
+            setSeconds(FOCUS_TIME);
+            setMode("focus");
+          }}
+        >
+          Reset
+        </button>
       </div>
+
+      {!state.activeTaskId && (
+        <p className="hint">Start a task to enable timer</p>
+      )}
     </div>
   );
 }

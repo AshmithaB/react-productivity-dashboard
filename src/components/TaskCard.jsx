@@ -5,6 +5,8 @@ export default function TaskCard({ task }) {
   const { state, dispatch } = useContext(AppContext);
 
   const isActive = state.activeTaskId === task.id;
+const isAnotherTaskActive =
+  state.activeTaskId && !isActive;
 
   return (
     <div
@@ -22,16 +24,14 @@ export default function TaskCard({ task }) {
 
       {!task.completed && (
         <button
-          onClick={() =>
-            dispatch({
-              type: "START_TASK",
-              payload: task.id,
-            })
-          }
-          disabled={state.activeTaskId && !isActive}
-        >
-          {isActive ? "In Focus" : "Start"}
-        </button>
+  onClick={() =>
+    dispatch({ type: "START_TASK", payload: task.id })
+  }
+  disabled={isAnotherTaskActive}
+>
+  {isActive ? "In Focus" : "Start"}
+</button>
+
       )}
 
       <button
