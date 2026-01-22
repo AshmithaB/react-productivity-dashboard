@@ -31,22 +31,26 @@ function reducer(state, action) {
 
 
     case "TOGGLE_TASK":
-      return {
-        ...state,
-        tasks: state.tasks.map((task) =>
-          task.id === action.payload
-            ? { ...task, completed: !task.completed }
-            : task
-        ),
-      };
+  if (state.activeTaskId === action.payload) return state;
+  return {
+    ...state,
+    tasks: state.tasks.map(task =>
+      task.id === action.payload
+        ? { ...task, completed: !task.completed }
+        : task
+    ),
+  };
 
-    case "DELETE_TASK":
-      return {
-        ...state,
-        tasks: state.tasks.filter(
-          (task) => task.id !== action.payload
-        ),
-      };
+case "DELETE_TASK":
+  return {
+    ...state,
+    tasks: state.tasks.filter(task => task.id !== action.payload),
+    activeTaskId:
+      state.activeTaskId === action.payload
+        ? null
+        : state.activeTaskId,
+  };
+
 
     case "TOGGLE_THEME":
       return {
