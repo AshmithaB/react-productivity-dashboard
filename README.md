@@ -1,16 +1,162 @@
-# React + Vite
+# Productivity Dashboard (Pomodoro + Task Manager)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern productivity-focused web application built with **React** and **Vite**, combining **task management** with a **Pomodoro focus timer** to promote deep work and disciplined time management.
 
-Currently, two official plugins are available:
+🔗 **Live Demo**  
+https://react-productivity-golddashboard.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Overview
 
-## Expanding the ESLint configuration
+The Productivity Dashboard is designed around the principle of **single-task focus**.  
+Users manage tasks while working in structured Pomodoro cycles (25 minutes focus + 5 minutes break), reducing distractions and improving productivity.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The application features a clean UI, persistent state using browser storage, and a scalable React architecture.
+
+
+
+## 🚀 Features
+
+### ✅ Task Management
+- Add, complete, and delete tasks
+- Filter tasks by **All / Active / Completed**
+- Persistent storage using **localStorage**
+- Minimal and distraction-free interface
+
+### ⏱ Pomodoro Focus Timer (25 / 5)
+- 25-minute focus sessions
+- 5-minute break cycles
+- Automatic phase switching
+- Visual countdown and status indication
+
+### 📊 Productivity Analytics
+- Completed task count
+- Focus session tracking
+- Simple productivity insights
+
+### 🎨 Theme System
+- Light and Dark mode support
+- Elegant gold-based theme
+- User preference persists across sessions
+
+
+
+## 🧱 Tech Stack
+
+**Frontend**
+- React (Functional Components)
+- Vite (Fast build & HMR)
+- Context API + useReducer
+- Custom React Hooks
+
+**Styling**
+- CSS Modules
+- Theme variables (CSS custom properties)
+
+**State & Persistence**
+- localStorage
+- Global state management via Context
+
+**Deployment**
+- Vercel (CI/CD with GitHub integration)
+
+
+
+## 🗂 Project Structure
+
+
+
+src/
+├── components/
+│   ├── Navbar.jsx
+│   ├── TaskCard.jsx
+│   ├── Timer.jsx
+│   └── Stats.jsx
+│
+├── pages/
+│   ├── Dashboard.jsx
+│   ├── Analytics.jsx
+│   └── Settings.jsx
+│
+├── context/
+│   └── AppContext.jsx
+│
+├── hooks/
+│   ├── usePomodoro.js
+│   └── useLocalStorage.js
+│
+├── styles/
+│   └── theme.css
+│
+├── App.jsx
+├── main.jsx
+└── index.css
+
+
+
+
+
+## 🛠 Installation & Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/AshmithaB/react-productivity-dashboard.git
+
+# Navigate to the project directory
+cd react-productivity-dashboard
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+````
+
+
+
+## 🧪 Testing Checklist (Pre-Deployment)
+
+* Task add / delete / complete works correctly
+* Filters update task views correctly
+* Pomodoro timer runs without drift
+* Data persists on page refresh
+* Theme toggle persists user preference
+* No console errors in production build
+
+
+
+## 📌 Design Principles
+
+* **Single-task focus** over multitasking
+* **Minimal UI** to reduce cognitive load
+* **Reusable components** for scalability
+* **Separation of concerns** via hooks and context
+
+
+
+## 📈 Future Enhancements
+
+* Charts and detailed analytics
+* React Router based navigation
+* Cloud-based persistence (Backend integration)
+* Authentication and user profiles
+
+
+
+## 👩‍💻 Author
+
+**Ashmitha B**
+Aspiring Software Engineer
+Focused on building scalable, production-ready applications
+
+
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+
+
+
+
