@@ -1,17 +1,17 @@
 import { useEffect, useState, useContext } from "react";
 import { AppContext } from "../context/AppContext";
 
-const FOCUS_TIME = 25 * 60;
-const BREAK_TIME = 5 * 60;
+const FOCUS_TIME = 25 * 60; // 25 minutes
+const BREAK_TIME = 5 * 60; // 5 minutes
 
 export default function Timer() {
   const { state, dispatch } = useContext(AppContext);
 
   const [seconds, setSeconds] = useState(FOCUS_TIME);
   const [isRunning, setIsRunning] = useState(false);
-  const [mode, setMode] = useState("focus"); // focus | break
+  const [mode, setMode] = useState("focus"); // "focus" | "break"
 
-  // ⏱ Timer tick
+  /* ⏱ Tick */
   useEffect(() => {
     if (!isRunning) return;
 
@@ -22,11 +22,11 @@ export default function Timer() {
     return () => clearInterval(interval);
   }, [isRunning]);
 
-  // ⏰ When time finishes
+  /* ⏰ Handle completion */
   useEffect(() => {
     if (seconds > 0) return;
 
-    if (mode === "focus") {
+    if (mode === "focus" && state.activeTaskId) {
       dispatch({ type: "FINISH_TASK" });
       setMode("break");
       setSeconds(BREAK_TIME);
@@ -34,21 +34,20 @@ export default function Timer() {
       setMode("focus");
       setSeconds(FOCUS_TIME);
     }
-  }, [seconds, mode, dispatch]);
+  }, [seconds, mode, dispatch, state.activeTaskId]);
 
-  // 🔄 Reset timer when active task changes
+  /* 🔄 Reset on task change */
   useEffect(() => {
-    setIsRunning(false);
-    setMode("focus");
-    setSeconds(FOCUS_TIME);
+    if (state.activeTaskId) {
+      setMode("focus");
+      setSeconds(FOCUS_TIME);
+      setIsRunning(true); // auto-start
+    } else {
+      setIsRunning(false);
+      setSeconds(FOCUS_TIME);
+      setMode("focus");
+    }
   }, [state.activeTaskId]);
-  // auto-start timer when a task is started
-useEffect(() => {
-  if (state.activeTaskId) {
-    setIsRunning(true);
-  }
-}, [state.activeTaskId]);
-
 
   function formatTime(sec) {
     const m = String(Math.floor(sec / 60)).padStart(2, "0");
@@ -57,20 +56,20 @@ useEffect(() => {
   }
 
   return (
-    <div className="timer">
+    <div className="timer-card">
       <h2>{mode === "focus" ? "Focus Time" : "Break Time"}</h2>
 
-      <div className="time">{formatTime(seconds)}</div>
+      <div className="timer-display">
+        {formatTime(seconds)}
+      </div>
 
       <div className="timer-controls">
         <button
-          onClick={() => setIsRunning(true)}
+          onClick={() => setIsRunning(!isRunning)}
           disabled={!state.activeTaskId}
         >
-          Start
+          {isRunning ? "Pause" : "Resume"}
         </button>
-
-        <button onClick={() => setIsRunning(false)}>Pause</button>
 
         <button
           onClick={() => {
@@ -78,13 +77,16 @@ useEffect(() => {
             setSeconds(FOCUS_TIME);
             setMode("focus");
           }}
+          disabled={!state.activeTaskId}
         >
           Reset
         </button>
       </div>
 
       {!state.activeTaskId && (
-        <p className="hint">Start a task to enable timer</p>
+        <p className="hint">
+          Start a task to activate the Pomodoro timer
+        </p>
       )}
     </div>
   );
